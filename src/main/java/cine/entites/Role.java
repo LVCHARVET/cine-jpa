@@ -15,15 +15,15 @@ public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
-	
+
 	@ManyToOne
-	@JoinColumn(name = "ID_ACTEUR", referencedColumnName = "ID_IMDB")
+	@JoinColumn(name = "ID_ACTEUR")
 	Acteur acteur;
-	
+
 	@ManyToOne
-	@JoinColumn(name = "ID_FILM", referencedColumnName = "ID_IMDB")
+	@JoinColumn(name = "ID_FILM")
 	Film film;
-	
+
 	@Column(name = "PERSONNAGE")
 	String personnage;
 }
