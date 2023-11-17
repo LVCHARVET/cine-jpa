@@ -1,30 +1,54 @@
 package cine.entites;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
+/**
+ * @author Louis-Valentin CHARVET
+ *
+ */
+
+@Entity
+@Table(name = "ACTEUR")
 public class Acteur {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
+
+	@Column(name = "ID_IMDB")
 	String idImdb;
+
+	@Column(name = "IDENTITE")
 	String identite;
+
+	@Column(name = "DATE_NAISSANCE")
 	LocalDate dateNaissance;
+
+	@Column(name = "URL")
 	String url;
 
 	@ManyToMany
 	@JoinTable(name = "CASTING_PRINCIPAL", joinColumns = @JoinColumn(name = "ID_ACTEUR"), inverseJoinColumns = @JoinColumn(name = "ID_FILM"))
-	List<Film> films;
+	List<Film> films = new ArrayList<>();
 
 	@OneToMany
 	List<Role> roles;
 
 	@ManyToOne
-	@JoinColumn(name = "LIEU_NAISSANCE", referencedColumnName = "NOM")
+	@JoinColumn(name = "ID_LIEU_NAISSANCE")
 	LieuNaissance lieuNaissance;
 
 	public Acteur(String idImdb, String identite, LocalDate dateNaissance, String url) {
@@ -37,6 +61,15 @@ public class Acteur {
 	public Acteur(String idImdb, String identite) {
 		this.idImdb = idImdb;
 		this.identite = identite;
+	}
+
+	public static Acteur getActeurByIdbm(List<Acteur> listActeur, String nomActeur) {
+		for (Acteur acteurs : listActeur) {
+			if (acteurs.getIdImdb().equals(nomActeur)) {
+				return acteurs;
+			}
+		}
+		return null;
 	}
 
 	@Override

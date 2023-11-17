@@ -1,70 +1,104 @@
 package cine.appli;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import cine.entites.Acteur;
 import cine.entites.Film;
 import cine.entites.Genre;
 import cine.entites.Langue;
 import cine.entites.LieuNaissance;
+import cine.entites.Pays;
 import cine.entites.Realisateur;
+import cine.entites.Role;
 
 public class IntegrationCine {
 
 	public static void main(String[] args) throws IOException {
+
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("cine");
+		EntityManager em = emf.createEntityManager();
+
 		// Chemin vers le fichier csv
-//		String pathFile = "films.csv";
-//		LectureCSV lectureCsv = new LectureCSV();
-//		List<Genre> arrayGenre = lectureCsv.parseGenre(pathFile);
-//		for (Genre genres : arrayGenre) {
-//			System.out.println(genres);
-//		}
-
-//		String pathFile2 = "films.csv";
-//		LectureCSV lectureCsv2 = new LectureCSV();
-//		List<Langue> arrayLangue = lectureCsv2.parseLangue(pathFile2);
-//		for (Langue langues : arrayLangue) {
-//			System.out.println(langues);
-//		}
-//
-//		String pathFile3 = "acteurs.csv";
-//		LectureCSV lectureCsv3 = new LectureCSV();
-//		List<LieuNaissance> arrayLieuNaissance = lectureCsv3.parseLieuNaissance(pathFile3);
-//		for (LieuNaissance lieuNaissances : arrayLieuNaissance) {
-//			System.out.println(lieuNaissances);
-//		}	
-
 		String pathFileFilm = "films.csv";
 		String pathFilePays = "Pays.csv";
 		String pathFileRealisateur = "realisateurs.csv";
 		String pathFileActeur = "acteurs.csv";
 		String pathFileFilmRealisateur = "film_realisateurs.csv";
+		String pathFileFilmActeur = "castingPrincipal.csv";
+		String pathRole = "roles.csv";
+
+		em.getTransaction().begin();
+
+		LectureCSV lectureCsvGenre = new LectureCSV();
+		List<Genre> arrayGenre = lectureCsvGenre.parseGenre(pathFileFilm);
+		for (Genre genres : arrayGenre) {
+			em.persist(genres);
+		}
+
+		LectureCSV lectureCsvLangue = new LectureCSV();
+		List<Langue> arrayLangue = lectureCsvLangue.parseLangue(pathFileFilm);
+		for (Langue langues : arrayLangue) {
+			em.persist(langues);
+		}
+
+		LectureCSV lectureCsvPays = new LectureCSV();
+		List<Pays> arrayPays = lectureCsvPays.parsePays(pathFileFilm);
+		for (Pays pays : arrayPays) {
+			em.persist(pays);
+		}
+
+		LectureCSV lectureCsvLieuNaissance = new LectureCSV();
+		List<LieuNaissance> arrayLieuNaissance = lectureCsvLieuNaissance.parseLieuNaissance(pathFileRealisateur,
+				pathFileActeur);
+		for (LieuNaissance lieuNaissances : arrayLieuNaissance) {
+			System.out.println(lieuNaissances);
+			em.persist(lieuNaissances);
+		}
 
 		LectureCSV lectureCsvFilmRealisateur = new LectureCSV();
 		List<String> arrayFilmRealisateur = lectureCsvFilmRealisateur.parseFilmRealisateur(pathFileFilmRealisateur,
-				pathFileFilm, pathFilePays, pathFileRealisateur);
+				pathFileFilm, pathFilePays, pathFileRealisateur, pathFileActeur);
 
-//		LectureCSV lectureCsvFilm = new LectureCSV();
-//		List<Film> arrayFilm = lectureCsvFilm.parseFilm(pathFileFilm, pathFilePays);
-//		for (Film films : arrayFilm) {
-//			System.out.println(films);
-//		}
+		LectureCSV lectureCsvFilmActeur = new LectureCSV();
+		List<String> arrayFilmActeur = lectureCsvFilmActeur.parseFilmActeur(pathFileFilmActeur, pathFileFilm,
+				pathFilePays, pathFileActeur, pathFileRealisateur);
 
-//		
-//		LectureCSV lectureCsv = new LectureCSV();
-//		List<Acteur> arrayActeur = lectureCsv.parseActeur(pathFileActeur);
-//		for (Acteur acteurs : arrayActeur) {
-//			System.out.println(acteurs);
-//		}
+		LectureCSV lectureCsvActeur = new LectureCSV();
+		List<Acteur> arrayActeur = lectureCsvActeur.parseActeur(pathFileActeur, pathFileRealisateur,
+				arrayLieuNaissance);
+		for (Acteur acteurs : arrayActeur) {
+			System.out.println(acteurs);
+			em.persist(acteurs);
+		}
 
-//		LectureCSV lectureCsvRealisateur = new LectureCSV();
-//		List<Realisateur> arrayRealisateur = lectureCsvRealisateur.parseRealisateur(pathFileRealisateur);
-//		for (Realisateur realisateurs : arrayRealisateur) {
-//			System.out.println(realisateurs);
-//		}
+		LectureCSV lectureCsvRealisateur = new LectureCSV();
+		List<Realisateur> arrayRealisateur = lectureCsvRealisateur.parseRealisateur(pathFileActeur,
+				pathFileRealisateur);
+		for (Realisateur realisateurs : arrayRealisateur) {
+			em.persist(realisateurs);
+		}
+		LectureCSV lectureCsvFilm = new LectureCSV();
+		List<Film> arrayFilm = lectureCsvFilm.parseFilm(pathFileFilm, pathFilePays);
+		for (Film films : arrayFilm) {
+			em.persist(films);
+		}
+
+		LectureCSV lectureCsvRole = new LectureCSV();
+		List<Role> arrayRole = lectureCsvRole.parseRole(pathRole, pathFileFilm, pathFilePays, pathFileActeur,
+				pathFileRealisateur);
+		for (Role roles : arrayRole) {
+			em.persist(roles);
+		}
+		em.getTransaction().commit();
+
+		// Fermeture de la connection a la BDD
+		em.close();
+		emf.close();
 	}
 }

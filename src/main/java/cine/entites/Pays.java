@@ -2,11 +2,26 @@ package cine.entites;
 
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "PAYS")
 public class Pays {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
+
+	@Column(name = "NOM")
 	String nom;
+
+	@Column(name = "URL")
 	String url;
 
 	@OneToMany

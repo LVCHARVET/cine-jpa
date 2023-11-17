@@ -2,10 +2,22 @@ package cine.entites;
 
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "LIEU_NAISSANCE")
 public class LieuNaissance {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
+
+	@Column(name = "NOM")
 	String nom;
 
 	@OneToMany
@@ -20,7 +32,7 @@ public class LieuNaissance {
 
 	@Override
 	public String toString() {
-		return "LieuNaissance [nom=" + nom + "]";
+		return "LieuNaissance [id=" + id + ", nom=" + nom + "]";
 	}
 
 	public static LieuNaissance getLieuNaissanceByNom(List<LieuNaissance> listLieuNaissance, String nomLieuNaissance) {

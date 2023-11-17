@@ -3,6 +3,7 @@ package cine.entites;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,26 +18,27 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "FILM")
 public class Film {
-	/**
-	 * Constructeur
-	 * 
-	 * @param idImdb
-	 * @param nom2
-	 * @param annee2
-	 * @param rating2
-	 * @param url2
-	 * @param lieuTournage2
-	 * @param resume2
-	 */
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
+
+	@Column(name = "ID_IMDB")
 	String idImbd;
+
+	@Column(name = "NOM")
 	String nom;
+
+	@Column(name = "ANNEE")
 	String annee;
+
+	@Column(name = "RATING")
 	String rating;
+
+	@Column(name = "URLD")
 	String url;
+
+	@Column(name = "LIEU_TOURNAGE")
 	String lieuTournage;
 
 	@ManyToMany
@@ -47,6 +49,7 @@ public class Film {
 	@JoinColumn(name = "LANGUE", referencedColumnName = "NOM")
 	Langue langue;
 
+	@Column(name = "RESUME", length = 5000)
 	String resume;
 
 	@ManyToOne

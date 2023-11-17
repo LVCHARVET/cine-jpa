@@ -4,16 +4,35 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "REALISATEUR")
 public class Realisateur {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
+
+	@Column(name = "ID_IMDB")
 	String idImdb;
+
+	@Column(name = "IDENTITE")
 	String identite;
+
+	@Column(name = "DATE_NAISSANCE")
 	LocalDate dateNaissance;
+
+	@Column(name = "URL")
 	String url;
 
 	@ManyToMany
@@ -21,7 +40,7 @@ public class Realisateur {
 	List<Film> films = new ArrayList<>();
 
 	@ManyToOne
-	@JoinColumn(name = "LIEU_NAISSANCE", referencedColumnName = "NOM")
+	@JoinColumn(name = "ID_LIEU_NAISSANCE")
 	LieuNaissance lieuNaissance;
 
 	public Realisateur(String idImdb, String identite, LocalDate dateNaissance, String url) {
