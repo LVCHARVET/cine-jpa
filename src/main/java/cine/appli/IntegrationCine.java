@@ -48,8 +48,8 @@ public class IntegrationCine {
 		List<String> arrayFilmRealisateur = lectureCsvFilmRealisateur.parseFilmRealisateur(pathFileFilmRealisateur,
 				pathFileFilm, pathFilePays, pathFileRealisateur);
 
-		LectureCSV lectureCsvFilm = new LectureCSV();
-		List<Film> arrayFilm = lectureCsvFilm.parseFilm(pathFileFilm, pathFilePays);
+//		LectureCSV lectureCsvFilm = new LectureCSV();
+//		List<Film> arrayFilm = lectureCsvFilm.parseFilm(pathFileFilm, pathFilePays);
 //		for (Film films : arrayFilm) {
 //			System.out.println(films);
 //		}
@@ -61,8 +61,8 @@ public class IntegrationCine {
 //			System.out.println(acteurs);
 //		}
 
-		LectureCSV lectureCsvRealisateur = new LectureCSV();
-		List<Realisateur> arrayRealisateur = lectureCsvRealisateur.parseRealisateur(pathFileRealisateur);
+//		LectureCSV lectureCsvRealisateur = new LectureCSV();
+//		List<Realisateur> arrayRealisateur = lectureCsvRealisateur.parseRealisateur(pathFileRealisateur);
 //		for (Realisateur realisateurs : arrayRealisateur) {
 //			System.out.println(realisateurs);
 //		}

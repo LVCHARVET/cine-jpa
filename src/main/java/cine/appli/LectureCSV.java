@@ -371,19 +371,10 @@ public class LectureCSV {
 
 				Film actuelFilm = Film.getFilmByIdbm(arrayFilm, idIdbmFilm);
 				System.out.println(actuelFilm);
+
 				Realisateur actuelRealisateur = Realisateur.getRealisateurByIdbm(arrayRealisateur, idIdbmRealisateur);
 				System.out.println(actuelRealisateur);
 
-				if (actuelFilm.getRealisateurs() == null) {
-					List<Realisateur> newRealisateur = new ArrayList<>();
-					newRealisateur.add(actuelRealisateur);
-					actuelFilm.setRealisateurs(newRealisateur);
-				}
-				if (actuelRealisateur.getFilms() == null) {
-					List<Film> newFilm = new ArrayList<>();
-					newFilm.add(actuelFilm);
-					actuelRealisateur.setFilms(newFilm);
-				}
 				actuelFilm.getRealisateurs().add(actuelRealisateur);
 				actuelRealisateur.getFilms().add(actuelFilm);
 

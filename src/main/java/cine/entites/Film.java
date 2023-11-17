@@ -1,5 +1,6 @@
 package cine.entites;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -54,14 +55,14 @@ public class Film {
 
 	@ManyToMany
 	@JoinTable(name = "CASTING_PRINCIPAL", joinColumns = @JoinColumn(name = "ID_FILM"), inverseJoinColumns = @JoinColumn(name = "ID_ACTEUR"))
-	List<Acteur> acteurs;
+	List<Acteur> acteurs = new ArrayList<>();
 
 	@OneToMany
-	List<Role> roles;
+	List<Role> roles = new ArrayList<>();
 
 	@ManyToMany
 	@JoinTable(name = "FILMS_REALISATEURS", joinColumns = @JoinColumn(name = "ID_FILM"), inverseJoinColumns = @JoinColumn(name = "ID_REALISATEUR"))
-	List<Realisateur> realisateurs;
+	List<Realisateur> realisateurs = new ArrayList<>();
 
 	public Film() {
 	}
@@ -81,8 +82,7 @@ public class Film {
 	public String toString() {
 		return "Film [idImbd=" + idImbd + ", nom=" + nom + ", annee=" + annee + ", rating=" + rating + ", url=" + url
 				+ ", lieuTournage=" + lieuTournage + ", genres=" + genres + ", langue=" + langue + ", resume=" + resume
-				+ ", pays=" + pays + ", acteurs=" + acteurs + ", roles=" + roles + ", realisateurs=" + realisateurs
-				+ "]";
+				+ ", pays=" + pays + "]";
 	}
 
 	public static Film getFilmByIdbm(List<Film> listFilm, String nomFilm) {

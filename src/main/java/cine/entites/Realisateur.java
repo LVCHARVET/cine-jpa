@@ -1,6 +1,7 @@
 package cine.entites;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.JoinColumn;
@@ -17,7 +18,7 @@ public class Realisateur {
 
 	@ManyToMany
 	@JoinTable(name = "FILMS_REALISATEURS", joinColumns = @JoinColumn(name = "ID_REALISATEUR"), inverseJoinColumns = @JoinColumn(name = "ID_FILMS"))
-	List<Film> films;
+	List<Film> films = new ArrayList<>();
 
 	@ManyToOne
 	@JoinColumn(name = "LIEU_NAISSANCE", referencedColumnName = "NOM")
