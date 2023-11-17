@@ -29,6 +29,8 @@ public class LectureCSV {
 	List<Genre> arrayGenre = new ArrayList<>();
 	List<Langue> arrayLangue = new ArrayList<>();
 	List<Pays> arrayPays = new ArrayList<>();
+	List<Film> arrayFilm = new ArrayList<>();
+	List<Realisateur> arrayRealisateur = new ArrayList<>();
 
 	public List<LieuNaissance> parseLieuNaissance(String pathFile) {
 
@@ -322,8 +324,6 @@ public class LectureCSV {
 					Genre actuelGenre = Genre.getGenreByNom(arrayGenre, genres);
 					arrayActuelGenre.add(actuelGenre);
 				}
-				
-				
 
 				Film actuelFilm = new Film(idImdb, nom, annee, rating, url, lieuTournage, resume);
 				actuelFilm.setLangue(actuelLangue);
@@ -340,4 +340,58 @@ public class LectureCSV {
 		return arrayFilms;
 	}
 
+	public List<String> parseFilmRealisateur(String pathFile, String pathFileFilm, String pathFilPays,
+			String pathFileRealisateur) {
+
+		List<String> arrayFilmRealisateur = new ArrayList<>();
+		ClassLoader cl = getClass().getClassLoader();
+		InputStream is = cl.getResourceAsStream(pathFile);
+
+		if (is == null) {
+			throw new RuntimeException("Le fichier .csv n'a pas été trouvé: " + pathFile);
+		}
+
+		try (BufferedReader lecteur = new BufferedReader(new InputStreamReader(is))) {
+			String line;
+			lecteur.readLine();
+			while ((line = lecteur.readLine()) != null) {
+				String[] tokens = line.split(";");
+				String idIdbmFilm = tokens[0];
+				String idIdbmRealisateur = tokens[1];
+
+				if (arrayFilm.isEmpty()) {
+					LectureCSV lectureCsvFilm = new LectureCSV();
+					arrayFilm = lectureCsvFilm.parseFilm(pathFileFilm, pathFilPays);
+				}
+
+				if (arrayRealisateur.isEmpty()) {
+					LectureCSV lectureCsvRealisateur = new LectureCSV();
+					arrayRealisateur = lectureCsvRealisateur.parseRealisateur(pathFileRealisateur);
+				}
+
+				Film actuelFilm = Film.getFilmByIdbm(arrayFilm, idIdbmFilm);
+				System.out.println(actuelFilm);
+				Realisateur actuelRealisateur = Realisateur.getRealisateurByIdbm(arrayRealisateur, idIdbmRealisateur);
+				System.out.println(actuelRealisateur);
+
+				if (actuelFilm.getRealisateurs() == null) {
+					List<Realisateur> newRealisateur = new ArrayList<>();
+					newRealisateur.add(actuelRealisateur);
+					actuelFilm.setRealisateurs(newRealisateur);
+				}
+				if (actuelRealisateur.getFilms() == null) {
+					List<Film> newFilm = new ArrayList<>();
+					newFilm.add(actuelFilm);
+					actuelRealisateur.setFilms(newFilm);
+				}
+				actuelFilm.getRealisateurs().add(actuelRealisateur);
+				actuelRealisateur.getFilms().add(actuelFilm);
+
+			}
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+			throw new RuntimeException("Une erreur est survenue lors de la lecture du ficher .csv.");
+		}
+		return arrayFilmRealisateur;
+	}
 }

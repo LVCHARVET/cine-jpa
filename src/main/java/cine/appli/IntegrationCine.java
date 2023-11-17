@@ -36,28 +36,35 @@ public class IntegrationCine {
 //		List<LieuNaissance> arrayLieuNaissance = lectureCsv3.parseLieuNaissance(pathFile3);
 //		for (LieuNaissance lieuNaissances : arrayLieuNaissance) {
 //			System.out.println(lieuNaissances);
-//		}
+//		}	
 
-//		String pathFileFilm = "films.csv";
-//		String pathFilePays = "Pays.csv";
-//		LectureCSV lectureCsv = new LectureCSV();
-//		List<Film> arrayFilm = lectureCsv.parseFilm(pathFileFilm, pathFilePays);
+		String pathFileFilm = "films.csv";
+		String pathFilePays = "Pays.csv";
+		String pathFileRealisateur = "realisateurs.csv";
+		String pathFileActeur = "acteurs.csv";
+		String pathFileFilmRealisateur = "film_realisateurs.csv";
+
+		LectureCSV lectureCsvFilmRealisateur = new LectureCSV();
+		List<String> arrayFilmRealisateur = lectureCsvFilmRealisateur.parseFilmRealisateur(pathFileFilmRealisateur,
+				pathFileFilm, pathFilePays, pathFileRealisateur);
+
+		LectureCSV lectureCsvFilm = new LectureCSV();
+		List<Film> arrayFilm = lectureCsvFilm.parseFilm(pathFileFilm, pathFilePays);
 //		for (Film films : arrayFilm) {
 //			System.out.println(films);
 //		}
 
-//		String pathFileActeur = "acteurs.csv";
+//		
 //		LectureCSV lectureCsv = new LectureCSV();
 //		List<Acteur> arrayActeur = lectureCsv.parseActeur(pathFileActeur);
 //		for (Acteur acteurs : arrayActeur) {
 //			System.out.println(acteurs);
 //		}
 
-		String pathFileRealisateur = "realisateurs.csv";
 		LectureCSV lectureCsvRealisateur = new LectureCSV();
 		List<Realisateur> arrayRealisateur = lectureCsvRealisateur.parseRealisateur(pathFileRealisateur);
-		for (Realisateur realisateurs : arrayRealisateur) {
-			System.out.println(realisateurs);
-		}
+//		for (Realisateur realisateurs : arrayRealisateur) {
+//			System.out.println(realisateurs);
+//		}
 	}
 }

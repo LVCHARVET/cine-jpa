@@ -85,6 +85,15 @@ public class Film {
 				+ "]";
 	}
 
+	public static Film getFilmByIdbm(List<Film> listFilm, String nomFilm) {
+		for (Film films : listFilm) {
+			if (films.getIdImbd().equals(nomFilm)) {
+				return films;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Getter
 	 * 

@@ -41,6 +41,15 @@ public class Realisateur {
 				+ dateNaissance + ", url=" + url + ", films=" + films + ", lieuNaissance=" + lieuNaissance + "]";
 	}
 
+	public static Realisateur getRealisateurByIdbm(List<Realisateur> listRealisateur, String nomRealisateur) {
+		for (Realisateur realisateurs : listRealisateur) {
+			if (realisateurs.getIdImdb().equals(nomRealisateur)) {
+				return realisateurs;
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Getter
 	 * 
