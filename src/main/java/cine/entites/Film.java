@@ -28,9 +28,9 @@ public class Film {
 	 * @param resume2
 	 */
 
-	// @Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	int id;
 	String idImbd;
 	String nom;
 	String annee;
