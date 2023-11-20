@@ -20,14 +20,17 @@ public class LieuNaissance {
 	@Column(name = "NOM")
 	String nom;
 
-	@OneToMany(mappedBy="lieuNaissance")
+	@OneToMany(mappedBy = "lieuNaissance")
 	List<Realisateur> realisateurs;
 
-	@OneToMany(mappedBy="lieuNaissance")
+	@OneToMany(mappedBy = "lieuNaissance")
 	List<Acteur> acteurs;
 
 	public LieuNaissance(String nom) {
 		this.nom = nom;
+	}
+
+	public LieuNaissance() {
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class Pays {
 	@Column(name = "URL")
 	String url;
 
-	@OneToMany(mappedBy="pays")
+	@OneToMany(mappedBy = "pays")
 	List<Film> films;
 
 	public Pays(String nom, String url) {
@@ -37,7 +37,7 @@ public class Pays {
 
 	@Override
 	public String toString() {
-		return "Pays [id=" + id + ", nom=" + nom + ", url=" + url + ", films=" + films + "]";
+		return "Pays [id=" + id + ", nom=" + nom + ", url=" + url + "]";
 	}
 
 	public static Pays getPaysByNom(List<Pays> listPays, String nomPays) {

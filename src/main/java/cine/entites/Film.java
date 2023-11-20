@@ -84,9 +84,7 @@ public class Film {
 	@Override
 	public String toString() {
 		return "Film [id=" + id + ", idImbd=" + idImbd + ", nom=" + nom + ", annee=" + annee + ", rating=" + rating
-				+ ", url=" + url + ", lieuTournage=" + lieuTournage + ", genres=" + genres + ", langue=" + langue
-				+ ", resume=" + resume + ", pays=" + pays + ", acteurs=" + acteurs + ", roles=" + roles
-				+ ", realisateurs=" + realisateurs + "]";
+				+ ", url=" + url + ", lieuTournage=" + lieuTournage + "]";
 	}
 
 	public static Film getFilmByIdbm(List<Film> listFilm, String nomFilm) {

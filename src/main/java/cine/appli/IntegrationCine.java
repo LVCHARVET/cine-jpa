@@ -67,14 +67,13 @@ public class IntegrationCine {
 		}
 
 		LectureCSV lectureCsvActeur = new LectureCSV();
-		List<Acteur> arrayActeur = lectureCsvActeur.parseActeur(pathFileActeur, pathFileRealisateur,
-				arrayLieuNaissance);
+		List<Acteur> arrayActeur = lectureCsvActeur.parseActeur(pathFileActeur, arrayLieuNaissance);
 		for (Acteur acteurs : arrayActeur) {
 			em.persist(acteurs);
 		}
 
 		LectureCSV lectureCsvRealisateur = new LectureCSV();
-		List<Realisateur> arrayRealisateur = lectureCsvRealisateur.parseRealisateur(pathFileRealisateur, pathFileActeur,
+		List<Realisateur> arrayRealisateur = lectureCsvRealisateur.parseRealisateur(pathFileRealisateur,
 				arrayLieuNaissance);
 		for (Realisateur realisateurs : arrayRealisateur) {
 			em.persist(realisateurs);

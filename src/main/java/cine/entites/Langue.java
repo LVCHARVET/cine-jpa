@@ -27,9 +27,16 @@ public class Langue {
 		this.nom = nom;
 	}
 
+	/**
+	 * Constructeur
+	 * 
+	 */
+	public Langue() {
+	}
+
 	@Override
 	public String toString() {
-		return "Langue [id=" + id + ", nom=" + nom + ", films=" + films + "]";
+		return "Langue [id=" + id + ", nom=" + nom + "]";
 	}
 
 	public static Langue getLangueByNom(List<Langue> listLangue, String nomLangue) {

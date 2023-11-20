@@ -27,13 +27,20 @@ public class Role {
 	@Column(name = "PERSONNAGE")
 	String personnage;
 
+	/**
+	 * Constructeur
+	 * 
+	 */
+	public Role() {
+	}
+
 	public Role(String personnage) {
 		this.personnage = personnage;
 	}
 
 	@Override
 	public String toString() {
-		return "Role [id=" + id + ", acteur=" + acteur + ", film=" + film + ", personnage=" + personnage + "]";
+		return "Role [id=" + id + ", personnage=" + personnage + "]";
 	}
 
 	/**

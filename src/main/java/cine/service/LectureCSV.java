@@ -201,8 +201,7 @@ public class LectureCSV {
 		return arrayLangue;
 	}
 
-	public List<Acteur> parseActeur(String pathFileActeur, String pathFileRealisateur,
-			List<LieuNaissance> pathLieuNaissances) {
+	public List<Acteur> parseActeur(String pathFileActeur, List<LieuNaissance> pathLieuNaissances) {
 
 		List<Acteur> arrayActeur = new ArrayList<>();
 		ClassLoader cl = getClass().getClassLoader();
@@ -246,8 +245,7 @@ public class LectureCSV {
 		return arrayActeur;
 	}
 
-	public List<Realisateur> parseRealisateur(String pathFileRealisateur, String pathFileActeur,
-			List<LieuNaissance> pathLieuNaissances) {
+	public List<Realisateur> parseRealisateur(String pathFileRealisateur, List<LieuNaissance> pathLieuNaissances) {
 
 		List<Realisateur> arrayRealisateur = new ArrayList<>();
 		ClassLoader cl = getClass().getClassLoader();

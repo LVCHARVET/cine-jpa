@@ -58,7 +58,7 @@ public class Realisateur {
 	@Override
 	public String toString() {
 		return "Realisateur [id=" + id + ", idImdb=" + idImdb + ", identite=" + identite + ", dateNaissance="
-				+ dateNaissance + ", url=" + url + ", films=" + films + ", lieuNaissance=" + lieuNaissance + "]";
+				+ dateNaissance + ", url=" + url + "]";
 	}
 
 	public static Realisateur getRealisateurByIdbm(List<Realisateur> listRealisateur, String nomRealisateur) {

@@ -51,6 +51,14 @@ public class Acteur {
 	@JoinColumn(name = "ID_LIEU_NAISSANCE")
 	LieuNaissance lieuNaissance;
 
+	public Acteur() {
+	}
+
+	public Acteur(String identite) {
+		super();
+		this.identite = identite;
+	}
+
 	public Acteur(String idImdb, String identite, LocalDate dateNaissance, String url) {
 		this.idImdb = idImdb;
 		this.identite = identite;
@@ -75,7 +83,7 @@ public class Acteur {
 	@Override
 	public String toString() {
 		return "Acteur [id=" + id + ", idImdb=" + idImdb + ", identite=" + identite + ", dateNaissance=" + dateNaissance
-				+ ", url=" + url + ", films=" + films + ", roles=" + roles + ", lieuNaissance=" + lieuNaissance + "]";
+				+ ", url=" + url + "]";
 	}
 
 	/**
