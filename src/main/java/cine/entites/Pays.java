@@ -24,7 +24,7 @@ public class Pays {
 	@Column(name = "URL")
 	String url;
 
-	@OneToMany
+	@OneToMany(mappedBy="pays")
 	List<Film> films;
 
 	public Pays(String nom, String url) {

@@ -1,0 +1,96 @@
+CREATE TABLE Pays(
+   id_pays INT,
+   nom VARCHAR(50),
+   url VARCHAR(250),
+   PRIMARY KEY(id_pays)
+);
+
+CREATE TABLE Lieu_Naissance(
+   id_lieu_naissance INT,
+   nom VARCHAR(50),
+   PRIMARY KEY(id_lieu_naissance)
+);
+
+CREATE TABLE Genres(
+   id_genre INT,
+   nom VARCHAR(50),
+   PRIMARY KEY(id_genre)
+);
+
+CREATE TABLE Langue(
+   id_langue INT,
+   nom VARCHAR(50),
+   PRIMARY KEY(id_langue)
+);
+
+CREATE TABLE Acteurs(
+   id_acteur INT,
+   id_imdb VARCHAR(50),
+   identite VARCHAR(50),
+   date_naissance DATE,
+   url VARCHAR(250),
+   id_lieu_naissance INT NOT NULL,
+   PRIMARY KEY(id_acteur),
+   FOREIGN KEY(id_lieu_naissance) REFERENCES Lieu_Naissance(id_lieu_naissance)
+);
+
+CREATE TABLE Films(
+   id_film INT,
+   id_imdb VARCHAR(50),
+   nom VARCHAR(50),
+   annee INT,
+   rating DOUBLE,
+   url VARCHAR(250),
+   lieu_tournage VARCHAR(100),
+   resume TEXT,
+   id_langue INT NOT NULL,
+   id_pays INT NOT NULL,
+   PRIMARY KEY(id_film),
+   FOREIGN KEY(id_langue) REFERENCES Langue(id_langue),
+   FOREIGN KEY(id_pays) REFERENCES Pays(id_pays)
+);
+
+CREATE TABLE Realisateurs(
+   id_realisateur INT,
+   id_imdb VARCHAR(50),
+   identite VARCHAR(50),
+   date_naissance DATE,
+   url VARCHAR(250),
+   id_lieu_naissance INT NOT NULL,
+   PRIMARY KEY(id_realisateur),
+   FOREIGN KEY(id_lieu_naissance) REFERENCES Lieu_Naissance(id_lieu_naissance)
+);
+
+CREATE TABLE Roles(
+   id_role INT,
+   personnage VARCHAR(50),
+   id_film INT NOT NULL,
+   id_acteur INT NOT NULL,
+   PRIMARY KEY(id_role),
+   FOREIGN KEY(id_film) REFERENCES Films(id_film),
+   FOREIGN KEY(id_acteur) REFERENCES Acteurs(id_acteur)
+);
+
+CREATE TABLE Films_Realisateurs(
+   id_film INT,
+   id_realisateur INT,
+   PRIMARY KEY(id_film, id_realisateur),
+   FOREIGN KEY(id_film) REFERENCES Films(id_film),
+   FOREIGN KEY(id_realisateur) REFERENCES Realisateurs(id_realisateur)
+);
+
+CREATE TABLE Casting_Principal(
+   id_acteur INT,
+   id_film INT,
+   PRIMARY KEY(id_acteur, id_film),
+   FOREIGN KEY(id_acteur) REFERENCES Acteurs(id_acteur),
+   FOREIGN KEY(id_film) REFERENCES Films(id_film)
+);
+
+CREATE TABLE Films_Genres(
+   id_film INT,
+   id_genre INT,
+   PRIMARY KEY(id_film, id_genre),
+   FOREIGN KEY(id_film) REFERENCES Films(id_film),
+   FOREIGN KEY(id_genre) REFERENCES Genres(id_genre)
+);

@@ -1,4 +1,4 @@
-package cine.appli;
+package cine.service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
@@ -97,9 +96,6 @@ public class LectureCSV {
 			System.err.println(e.getMessage());
 			throw new RuntimeException("Une erreur est survenue lors de la lecture du ficher .csv.");
 		}
-		System.out.println(arrayStringLieuNaissance.size());
-		HashSet<String> triLieuNaissance = new HashSet<>(arrayStringLieuNaissance);
-		System.out.println(triLieuNaissance.size());
 		for (String lieuNaissances : arrayStringLieuNaissance) {
 			LieuNaissance newLieuNaissance = new LieuNaissance(lieuNaissances);
 			arrayLieuNaissance.add(newLieuNaissance);
@@ -206,7 +202,7 @@ public class LectureCSV {
 	}
 
 	public List<Acteur> parseActeur(String pathFileActeur, String pathFileRealisateur,
-			List<LieuNaissance> lieuNiassances) {
+			List<LieuNaissance> pathLieuNaissances) {
 
 		List<Acteur> arrayActeur = new ArrayList<>();
 		ClassLoader cl = getClass().getClassLoader();
@@ -233,7 +229,8 @@ public class LectureCSV {
 				String lieuNaissance = tokens[3].trim();
 				String url = tokens[4];
 
-				LieuNaissance actuelLieuNaissance = LieuNaissance.getLieuNaissanceByNom(lieuNiassances, lieuNaissance);
+				LieuNaissance actuelLieuNaissance = LieuNaissance.getLieuNaissanceByNom(pathLieuNaissances,
+						lieuNaissance);
 
 				Acteur actuelActeur = new Acteur(idImdb, identite, dateNaissance, url);
 				actuelActeur.setLieuNaissance(actuelLieuNaissance);
@@ -249,7 +246,8 @@ public class LectureCSV {
 		return arrayActeur;
 	}
 
-	public List<Realisateur> parseRealisateur(String pathFileRealisateur, String pathFileActeur) {
+	public List<Realisateur> parseRealisateur(String pathFileRealisateur, String pathFileActeur,
+			List<LieuNaissance> pathLieuNaissances) {
 
 		List<Realisateur> arrayRealisateur = new ArrayList<>();
 		ClassLoader cl = getClass().getClassLoader();
@@ -278,12 +276,7 @@ public class LectureCSV {
 				String lieuNaissance = tokens[3].trim();
 				String url = tokens[4];
 
-				if (arrayLieuNaissanceRealisateur.isEmpty()) {
-					LectureCSV lectureCsvLieuNaissance = new LectureCSV();
-					arrayLieuNaissanceRealisateur = lectureCsvLieuNaissance.parseLieuNaissance(pathFileRealisateur,
-							pathFileActeur);
-				}
-				LieuNaissance actuelLieuNaissance = LieuNaissance.getLieuNaissanceByNom(arrayLieuNaissanceRealisateur,
+				LieuNaissance actuelLieuNaissance = LieuNaissance.getLieuNaissanceByNom(pathLieuNaissances,
 						lieuNaissance);
 
 				Realisateur actuelRealisateur = new Realisateur(idImdb, identite, dateNaissance, url);
@@ -300,7 +293,8 @@ public class LectureCSV {
 		return arrayRealisateur;
 	}
 
-	public List<Film> parseFilm(String pathFileFilm, String pathFilePays) {
+	public List<Film> parseFilm(String pathFileFilm, List<Pays> pathPays, List<Langue> pathLangue,
+			List<Genre> pathGenre) {
 
 		List<Film> arrayFilms = new ArrayList<>();
 		ClassLoader cl = getClass().getClassLoader();
@@ -341,26 +335,13 @@ public class LectureCSV {
 				String langue = tokens[7];
 				String resume = tokens[8];
 
-				if (arrayPays.isEmpty()) {
-					LectureCSV lectureCsvPays = new LectureCSV();
-					arrayPays = lectureCsvPays.parsePays(pathFilePays);
-				}
-				Pays actuelPays = Pays.getPaysByNom(arrayPays, pays);
-
-				if (arrayLangue.isEmpty()) {
-					LectureCSV lectureCsvLangue = new LectureCSV();
-					arrayLangue = lectureCsvLangue.parseLangue(pathFileFilm);
-				}
-				Langue actuelLangue = Langue.getLangueByNom(arrayLangue, langue);
+				Pays actuelPays = Pays.getPaysByNom(pathPays, pays);
+				Langue actuelLangue = Langue.getLangueByNom(pathLangue, langue);
 
 				List<Genre> arrayActuelGenre = new ArrayList<>();
-				if (arrayGenre.isEmpty()) {
-					LectureCSV lectureCsvGenre = new LectureCSV();
-					arrayGenre = lectureCsvGenre.parseGenre(pathFileFilm);
-				}
 				String[] listGenre = ligneGenre.split(",");
 				for (String genres : listGenre) {
-					Genre actuelGenre = Genre.getGenreByNom(arrayGenre, genres);
+					Genre actuelGenre = Genre.getGenreByNom(pathGenre, genres);
 					arrayActuelGenre.add(actuelGenre);
 				}
 
@@ -379,10 +360,8 @@ public class LectureCSV {
 		return arrayFilms;
 	}
 
-	public List<String> parseFilmActeur(String pathFile, String pathFileFilm, String pathFilPays, String pathFileActeur,
-			String pathFileRealisateur) {
+	public void parseFilmActeur(String pathFile, List<Film> pathFilm, List<Acteur> pathActeur) {
 
-		List<String> arrayFilmActeur = new ArrayList<>();
 		ClassLoader cl = getClass().getClassLoader();
 		InputStream is = cl.getResourceAsStream(pathFile);
 
@@ -398,19 +377,9 @@ public class LectureCSV {
 				String idIdbmFilm = tokens[0];
 				String idIdbmActeur = tokens[1];
 
-				if (arrayFilm.isEmpty()) {
-					LectureCSV lectureCsvFilm = new LectureCSV();
-					arrayFilm = lectureCsvFilm.parseFilm(pathFileFilm, pathFilPays);
-				}
+				Film actuelFilm = Film.getFilmByIdbm(pathFilm, idIdbmFilm);
 
-				if (arrayActeur.isEmpty()) {
-					LectureCSV lectureCsvActeur = new LectureCSV();
-					arrayActeur = lectureCsvActeur.parseActeur(pathFileActeur, pathFileRealisateur);
-				}
-
-				Film actuelFilm = Film.getFilmByIdbm(arrayFilm, idIdbmFilm);
-
-				Acteur actuelActeur = Acteur.getActeurByIdbm(arrayActeur, idIdbmActeur);
+				Acteur actuelActeur = Acteur.getActeurByIdbm(pathActeur, idIdbmActeur);
 
 				if (actuelFilm != null && actuelActeur != null) {
 					actuelFilm.getActeurs().add(actuelActeur);
@@ -421,13 +390,10 @@ public class LectureCSV {
 			System.err.println(e.getMessage());
 			throw new RuntimeException("Une erreur est survenue lors de la lecture du ficher .csv.");
 		}
-		return arrayFilmActeur;
 	}
 
-	public List<String> parseFilmRealisateur(String pathFile, String pathFileFilm, String pathFilPays,
-			String pathFileRealisateur, String pathFileActeur) {
+	public void parseFilmRealisateur(String pathFile, List<Film> pathFilm, List<Realisateur> pathRealisateur) {
 
-		List<String> arrayFilmRealisateur = new ArrayList<>();
 		ClassLoader cl = getClass().getClassLoader();
 		InputStream is = cl.getResourceAsStream(pathFile);
 
@@ -443,33 +409,23 @@ public class LectureCSV {
 				String idIdbmFilm = tokens[0];
 				String idIdbmRealisateur = tokens[1];
 
-				if (arrayFilm.isEmpty()) {
-					LectureCSV lectureCsvFilm = new LectureCSV();
-					arrayFilm = lectureCsvFilm.parseFilm(pathFileFilm, pathFilPays);
+				Film actuelFilm = Film.getFilmByIdbm(pathFilm, idIdbmFilm);
+
+				Realisateur actuelRealisateur = Realisateur.getRealisateurByIdbm(pathRealisateur, idIdbmRealisateur);
+
+				if (actuelFilm != null && actuelRealisateur != null) {
+					actuelFilm.getRealisateurs().add(actuelRealisateur);
+					actuelRealisateur.getFilms().add(actuelFilm);
 				}
-
-				if (arrayRealisateur.isEmpty()) {
-					LectureCSV lectureCsvRealisateur = new LectureCSV();
-					arrayRealisateur = lectureCsvRealisateur.parseRealisateur(pathFileRealisateur, pathFileActeur);
-				}
-
-				Film actuelFilm = Film.getFilmByIdbm(arrayFilm, idIdbmFilm);
-
-				Realisateur actuelRealisateur = Realisateur.getRealisateurByIdbm(arrayRealisateur, idIdbmRealisateur);
-
-				actuelFilm.getRealisateurs().add(actuelRealisateur);
-				actuelRealisateur.getFilms().add(actuelFilm);
 
 			}
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 			throw new RuntimeException("Une erreur est survenue lors de la lecture du ficher .csv.");
 		}
-		return arrayFilmRealisateur;
 	}
 
-	public List<Role> parseRole(String pathFile, String pathFileFilm, String pathFilPays, String pathFileActeur,
-			String pathFileRealisateur) {
+	public List<Role> parseRole(String pathFile, List<Film> pathFilm, List<Acteur> pathActeur) {
 
 		List<Role> arrayRole = new ArrayList<>();
 		ClassLoader cl = getClass().getClassLoader();
@@ -489,24 +445,18 @@ public class LectureCSV {
 				String idIdmbActeur = tokens[1];
 				String personnage = tokens[2];
 
-				if (arrayFilm.isEmpty()) {
-					LectureCSV lectureCsvFilm = new LectureCSV();
-					arrayFilm = lectureCsvFilm.parseFilm(pathFileFilm, pathFilPays);
-				}
-
-				if (arrayActeur.isEmpty()) {
-					LectureCSV lectureCsvActeur = new LectureCSV();
-					arrayActeur = lectureCsvActeur.parseActeur(pathFileActeur, pathFileRealisateur);
-				}
-
-				Film actuelFilm = Film.getFilmByIdbm(arrayFilm, idIdmbFilm);
-				Acteur actuelActeur = Acteur.getActeurByIdbm(arrayActeur, idIdmbActeur);
+				Film actuelFilm = Film.getFilmByIdbm(pathFilm, idIdmbFilm);
+				Acteur actuelActeur = Acteur.getActeurByIdbm(pathActeur, idIdmbActeur);
 
 				Role actuelRole = new Role(personnage);
-				actuelRole.setFilm(actuelFilm);
-				actuelRole.setActeur(actuelActeur);
 
-				arrayRole.add(actuelRole);
+				if (actuelFilm != null && actuelActeur != null) {
+					actuelRole.setFilm(actuelFilm);
+					actuelRole.setActeur(actuelActeur);
+
+					arrayRole.add(actuelRole);
+				}
+
 			}
 
 		} catch (

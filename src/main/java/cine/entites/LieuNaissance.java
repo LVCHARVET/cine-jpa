@@ -20,10 +20,10 @@ public class LieuNaissance {
 	@Column(name = "NOM")
 	String nom;
 
-	@OneToMany
+	@OneToMany(mappedBy="lieuNaissance")
 	List<Realisateur> realisateurs;
 
-	@OneToMany
+	@OneToMany(mappedBy="lieuNaissance")
 	List<Acteur> acteurs;
 
 	public LieuNaissance(String nom) {

@@ -20,7 +20,7 @@ public class Langue {
 	@Column(name = "NOM")
 	String nom;
 
-	@OneToMany
+	@OneToMany(mappedBy = "langue")
 	List<Film> films;
 
 	public Langue(String nom) {

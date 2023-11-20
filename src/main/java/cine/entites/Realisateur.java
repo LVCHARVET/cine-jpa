@@ -36,7 +36,7 @@ public class Realisateur {
 	String url;
 
 	@ManyToMany
-	@JoinTable(name = "FILMS_REALISATEURS", joinColumns = @JoinColumn(name = "ID_REALISATEUR"), inverseJoinColumns = @JoinColumn(name = "ID_FILMS"))
+	@JoinTable(name = "FILMS_REALISATEURS", joinColumns = @JoinColumn(name = "ID_REALISATEUR"), inverseJoinColumns = @JoinColumn(name = "ID_FILM"))
 	List<Film> films = new ArrayList<>();
 
 	@ManyToOne

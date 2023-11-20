@@ -1,7 +1,6 @@
 package cine.appli;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -16,6 +15,7 @@ import cine.entites.LieuNaissance;
 import cine.entites.Pays;
 import cine.entites.Realisateur;
 import cine.entites.Role;
+import cine.service.LectureCSV;
 
 public class IntegrationCine {
 
@@ -35,10 +35,10 @@ public class IntegrationCine {
 
 		em.getTransaction().begin();
 
-		LectureCSV lectureCsvGenre = new LectureCSV();
-		List<Genre> arrayGenre = lectureCsvGenre.parseGenre(pathFileFilm);
-		for (Genre genres : arrayGenre) {
-			em.persist(genres);
+		LectureCSV lectureCsvPays = new LectureCSV();
+		List<Pays> arrayPays = lectureCsvPays.parsePays(pathFilePays);
+		for (Pays pays : arrayPays) {
+			em.persist(pays);
 		}
 
 		LectureCSV lectureCsvLangue = new LectureCSV();
@@ -47,51 +47,47 @@ public class IntegrationCine {
 			em.persist(langues);
 		}
 
-		LectureCSV lectureCsvPays = new LectureCSV();
-		List<Pays> arrayPays = lectureCsvPays.parsePays(pathFileFilm);
-		for (Pays pays : arrayPays) {
-			em.persist(pays);
+		LectureCSV lectureCsvGenre = new LectureCSV();
+		List<Genre> arrayGenre = lectureCsvGenre.parseGenre(pathFileFilm);
+		for (Genre genres : arrayGenre) {
+			em.persist(genres);
 		}
 
 		LectureCSV lectureCsvLieuNaissance = new LectureCSV();
 		List<LieuNaissance> arrayLieuNaissance = lectureCsvLieuNaissance.parseLieuNaissance(pathFileRealisateur,
 				pathFileActeur);
 		for (LieuNaissance lieuNaissances : arrayLieuNaissance) {
-			System.out.println(lieuNaissances);
 			em.persist(lieuNaissances);
 		}
 
-		LectureCSV lectureCsvFilmRealisateur = new LectureCSV();
-		List<String> arrayFilmRealisateur = lectureCsvFilmRealisateur.parseFilmRealisateur(pathFileFilmRealisateur,
-				pathFileFilm, pathFilePays, pathFileRealisateur, pathFileActeur);
-
-		LectureCSV lectureCsvFilmActeur = new LectureCSV();
-		List<String> arrayFilmActeur = lectureCsvFilmActeur.parseFilmActeur(pathFileFilmActeur, pathFileFilm,
-				pathFilePays, pathFileActeur, pathFileRealisateur);
+		LectureCSV lectureCsvFilm = new LectureCSV();
+		List<Film> arrayFilm = lectureCsvFilm.parseFilm(pathFileFilm, arrayPays, arrayLangue, arrayGenre);
+		for (Film films : arrayFilm) {
+			em.persist(films);
+		}
 
 		LectureCSV lectureCsvActeur = new LectureCSV();
 		List<Acteur> arrayActeur = lectureCsvActeur.parseActeur(pathFileActeur, pathFileRealisateur,
 				arrayLieuNaissance);
 		for (Acteur acteurs : arrayActeur) {
-			System.out.println(acteurs);
 			em.persist(acteurs);
 		}
 
 		LectureCSV lectureCsvRealisateur = new LectureCSV();
-		List<Realisateur> arrayRealisateur = lectureCsvRealisateur.parseRealisateur(pathFileActeur,
-				pathFileRealisateur);
+		List<Realisateur> arrayRealisateur = lectureCsvRealisateur.parseRealisateur(pathFileRealisateur, pathFileActeur,
+				arrayLieuNaissance);
 		for (Realisateur realisateurs : arrayRealisateur) {
 			em.persist(realisateurs);
 		}
-		LectureCSV lectureCsvFilm = new LectureCSV();
-		List<Film> arrayFilm = lectureCsvFilm.parseFilm(pathFileFilm, pathFilePays);
-		for (Film films : arrayFilm) {
-			em.persist(films);
-		}
+
+		LectureCSV lectureCsvFilmActeur = new LectureCSV();
+		lectureCsvFilmActeur.parseFilmActeur(pathFileFilmActeur, arrayFilm, arrayActeur);
+
+		LectureCSV lectureCsvFilmRealisateur = new LectureCSV();
+		lectureCsvFilmRealisateur.parseFilmRealisateur(pathFileFilmRealisateur, arrayFilm, arrayRealisateur);
 
 		LectureCSV lectureCsvRole = new LectureCSV();
-		List<Role> arrayRole = lectureCsvRole.parseRole(pathRole, pathFileFilm, pathFilePays, pathFileActeur,
-				pathFileRealisateur);
+		List<Role> arrayRole = lectureCsvRole.parseRole(pathRole, arrayFilm, arrayActeur);
 		for (Role roles : arrayRole) {
 			em.persist(roles);
 		}

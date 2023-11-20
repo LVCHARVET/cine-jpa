@@ -44,7 +44,7 @@ public class Acteur {
 	@JoinTable(name = "CASTING_PRINCIPAL", joinColumns = @JoinColumn(name = "ID_ACTEUR"), inverseJoinColumns = @JoinColumn(name = "ID_FILM"))
 	List<Film> films = new ArrayList<>();
 
-	@OneToMany
+	@OneToMany(mappedBy = "acteur")
 	List<Role> roles;
 
 	@ManyToOne

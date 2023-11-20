@@ -46,21 +46,21 @@ public class Film {
 	List<Genre> genres;
 
 	@ManyToOne
-	@JoinColumn(name = "LANGUE", referencedColumnName = "NOM")
+	@JoinColumn(name = "LANGUE")
 	Langue langue;
 
 	@Column(name = "RESUME", length = 5000)
 	String resume;
 
 	@ManyToOne
-	@JoinColumn(name = "PAYS", referencedColumnName = "NOM")
+	@JoinColumn(name = "ID_PAYS")
 	Pays pays;
 
 	@ManyToMany
 	@JoinTable(name = "CASTING_PRINCIPAL", joinColumns = @JoinColumn(name = "ID_FILM"), inverseJoinColumns = @JoinColumn(name = "ID_ACTEUR"))
 	List<Acteur> acteurs = new ArrayList<>();
 
-	@OneToMany
+	@OneToMany(mappedBy = "film")
 	List<Role> roles = new ArrayList<>();
 
 	@ManyToMany
@@ -83,9 +83,10 @@ public class Film {
 
 	@Override
 	public String toString() {
-		return "Film [idImbd=" + idImbd + ", nom=" + nom + ", annee=" + annee + ", rating=" + rating + ", url=" + url
-				+ ", lieuTournage=" + lieuTournage + ", genres=" + genres + ", langue=" + langue + ", resume=" + resume
-				+ ", pays=" + pays + "]";
+		return "Film [id=" + id + ", idImbd=" + idImbd + ", nom=" + nom + ", annee=" + annee + ", rating=" + rating
+				+ ", url=" + url + ", lieuTournage=" + lieuTournage + ", genres=" + genres + ", langue=" + langue
+				+ ", resume=" + resume + ", pays=" + pays + ", acteurs=" + acteurs + ", roles=" + roles
+				+ ", realisateurs=" + realisateurs + "]";
 	}
 
 	public static Film getFilmByIdbm(List<Film> listFilm, String nomFilm) {
