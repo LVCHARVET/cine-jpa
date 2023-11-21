@@ -1,6 +1,3 @@
-/**
- * 
- */
 package cine.DAO;
 
 import java.util.List;

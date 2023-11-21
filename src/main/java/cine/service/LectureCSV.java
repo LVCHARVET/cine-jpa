@@ -597,11 +597,9 @@ public class LectureCSV {
 				// Appel de la methode de recherche d'un Acteur dans une liste par son ID IDBM
 				Acteur actuelActeur = Acteur.getActeurByIdbm(pathActeur, idIdbmActeur);
 
-				// Gestion des exceptions et ajout a du film dans l'acteur et de l'acteur dans
-				// le film
+				// Gestion des exceptions et ajout a du film dans l'acteur
 				if (actuelFilm != null && actuelActeur != null) {
 					actuelFilm.getActeurs().add(actuelActeur);
-					actuelActeur.getFilms().add(actuelFilm);
 				}
 			}
 		} catch (IOException e) {
@@ -652,12 +650,9 @@ public class LectureCSV {
 				// IDBM
 				Realisateur actuelRealisateur = Realisateur.getRealisateurByIdbm(pathRealisateur, idIdbmRealisateur);
 
-				// Gestion des exceptions et ajout a du film dans le réalisateur et du
-				// réalisateur dans
-				// le film
+				// Gestion des exceptions et ajout a du film dans le réalisateur
 				if (actuelFilm != null && actuelRealisateur != null) {
 					actuelFilm.getRealisateurs().add(actuelRealisateur);
-					actuelRealisateur.getFilms().add(actuelFilm);
 				}
 
 			}
