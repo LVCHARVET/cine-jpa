@@ -10,35 +10,61 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+/**
+ * Initialisation de l'entite Langue
+ * 
+ * @author Louis-Valentin CHARVET
+ *
+ */
 @Entity
 @Table(name = "LANGUE")
 public class Langue {
+
+	/** id */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int id;
+	private int id;
 
+	/** nom */
 	@Column(name = "NOM")
-	String nom;
+	private String nom;
 
+	/** films */
 	@OneToMany(mappedBy = "langue")
-	List<Film> films;
-
-	public Langue(String nom) {
-		this.nom = nom;
-	}
+	private List<Film> films;
 
 	/**
-	 * Constructeur
+	 * Constructeur jpa
 	 * 
 	 */
 	public Langue() {
 	}
 
+	/**
+	 * Constructeur
+	 * 
+	 * @param nom
+	 */
+	public Langue(String nom) {
+		this.nom = nom;
+	}
+
+	/**
+	 * Methode to string pour afficher sans erreur stackoverflow
+	 */
 	@Override
 	public String toString() {
 		return "Langue [id=" + id + ", nom=" + nom + "]";
 	}
 
+	/**
+	 * Methode de recherche d'une langue dans une liste de langue en fonction de son
+	 * nom
+	 * 
+	 * @param listLangue
+	 * @param nomLangue
+	 * @return
+	 */
 	public static Langue getLangueByNom(List<Langue> listLangue, String nomLangue) {
 		for (Langue langues : listLangue) {
 			if (langues.getNom().equals(nomLangue)) {

@@ -10,34 +10,65 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+/**
+ * Initialisation de l'entite LieuNaissance
+ * 
+ * @author Louis-Valentin CHARVET
+ *
+ */
 @Entity
 @Table(name = "LIEU_NAISSANCE")
 public class LieuNaissance {
+
+	/** id */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int id;
+	private int id;
 
+	/** nom */
 	@Column(name = "NOM")
-	String nom;
+	private String nom;
 
+	/** realisateurs */
 	@OneToMany(mappedBy = "lieuNaissance")
-	List<Realisateur> realisateurs;
+	private List<Realisateur> realisateurs;
 
+	/** acteurs */
 	@OneToMany(mappedBy = "lieuNaissance")
-	List<Acteur> acteurs;
+	private List<Acteur> acteurs;
 
+	/**
+	 * Constructeur jpa
+	 * 
+	 */
+	public LieuNaissance() {
+	}
+
+	/**
+	 * Constructeur
+	 * 
+	 * @param nom
+	 */
 	public LieuNaissance(String nom) {
 		this.nom = nom;
 	}
 
-	public LieuNaissance() {
-	}
-
+	/**
+	 * Methode to string pour afficher sans erreur stackoverflow
+	 */
 	@Override
 	public String toString() {
 		return "LieuNaissance [id=" + id + ", nom=" + nom + "]";
 	}
 
+	/**
+	 * Methode de recherche d'un lieu de naissence dans une liste de lieu de
+	 * naissence en fonction de son nom
+	 * 
+	 * @param listLieuNaissance
+	 * @param nomLieuNaissance
+	 * @return
+	 */
 	public static LieuNaissance getLieuNaissanceByNom(List<LieuNaissance> listLieuNaissance, String nomLieuNaissance) {
 		for (LieuNaissance lieuNaissances : listLieuNaissance) {
 			if (lieuNaissances.getNom().equals(nomLieuNaissance)) {

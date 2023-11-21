@@ -9,35 +9,54 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * Initialisation de l'entite Role
+ * 
+ * @author Louis-Valentin CHARVET
+ *
+ */
 @Entity
 @Table(name = "ROLE")
 public class Role {
+
+	/** id */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int id;
+	private int id;
 
+	/** acteur */
 	@ManyToOne
 	@JoinColumn(name = "ID_ACTEUR")
-	Acteur acteur;
+	private Acteur acteur;
 
+	/** film */
 	@ManyToOne
 	@JoinColumn(name = "ID_FILM")
-	Film film;
+	private Film film;
 
+	/** personnage */
 	@Column(name = "PERSONNAGE")
-	String personnage;
+	private String personnage;
 
 	/**
-	 * Constructeur
+	 * Constructeur jpa
 	 * 
 	 */
 	public Role() {
 	}
 
+	/**
+	 * Constructeur
+	 * 
+	 * @param personnage
+	 */
 	public Role(String personnage) {
 		this.personnage = personnage;
 	}
 
+	/**
+	 * Methode to string pour afficher sans erreur stackoverflow
+	 */
 	@Override
 	public String toString() {
 		return "Role [id=" + id + ", personnage=" + personnage + "]";

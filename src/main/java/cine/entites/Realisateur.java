@@ -15,34 +15,73 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * Initialisation de l'entite Realisateur
+ * 
+ * @author Louis-Valentin CHARVET
+ *
+ */
 @Entity
 @Table(name = "REALISATEUR")
 public class Realisateur {
 
+	/** id */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int id;
+	private int id;
 
+	/** idImdb */
 	@Column(name = "ID_IMDB")
-	String idImdb;
+	private String idImdb;
 
+	/** identite */
 	@Column(name = "IDENTITE")
-	String identite;
+	private String identite;
 
+	/** dateNaissance */
 	@Column(name = "DATE_NAISSANCE")
-	LocalDate dateNaissance;
+	private LocalDate dateNaissance;
 
+	/** url */
 	@Column(name = "URL")
-	String url;
+	private String url;
 
+	/** films */
 	@ManyToMany
 	@JoinTable(name = "FILMS_REALISATEURS", joinColumns = @JoinColumn(name = "ID_REALISATEUR"), inverseJoinColumns = @JoinColumn(name = "ID_FILM"))
-	List<Film> films = new ArrayList<>();
+	private List<Film> films = new ArrayList<>();
 
+	/** lieuNaissance */
 	@ManyToOne
 	@JoinColumn(name = "ID_LIEU_NAISSANCE")
-	LieuNaissance lieuNaissance;
+	private LieuNaissance lieuNaissance;
 
+	/**
+	 * Constructeur jpa
+	 * 
+	 */
+	public Realisateur() {
+	}
+
+	/**
+	 * Constructeur
+	 * 
+	 * @param idImdb
+	 * @param identite
+	 */
+	public Realisateur(String idImdb, String identite) {
+		this.idImdb = idImdb;
+		this.identite = identite;
+	}
+
+	/**
+	 * Constructeur
+	 * 
+	 * @param idImdb
+	 * @param identite
+	 * @param dateNaissance
+	 * @param url
+	 */
 	public Realisateur(String idImdb, String identite, LocalDate dateNaissance, String url) {
 		this.idImdb = idImdb;
 		this.identite = identite;
@@ -50,17 +89,23 @@ public class Realisateur {
 		this.url = url;
 	}
 
-	public Realisateur(String idImdb, String identite) {
-		this.idImdb = idImdb;
-		this.identite = identite;
-	}
-
+	/**
+	 * Methode to string pour afficher sans erreur stackoverflow
+	 */
 	@Override
 	public String toString() {
 		return "Realisateur [id=" + id + ", idImdb=" + idImdb + ", identite=" + identite + ", dateNaissance="
 				+ dateNaissance + ", url=" + url + "]";
 	}
 
+	/**
+	 * Methode de recherche d'un realisateur dans une liste de realisateur en
+	 * fonction de son nom
+	 * 
+	 * @param listRealisateur
+	 * @param nomRealisateur
+	 * @return
+	 */
 	public static Realisateur getRealisateurByIdbm(List<Realisateur> listRealisateur, String nomRealisateur) {
 		for (Realisateur realisateurs : listRealisateur) {
 			if (realisateurs.getIdImdb().equals(nomRealisateur)) {

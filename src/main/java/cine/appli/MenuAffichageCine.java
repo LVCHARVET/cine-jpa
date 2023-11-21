@@ -15,13 +15,15 @@ import cine.entites.Acteur;
 import cine.entites.Film;
 
 /**
+ * Class permetant l'affichage d'un menu de recherche sur la DB
+ * 
  * @author Louis-Valentin CHARVET
  *
  */
 public class MenuAffichageCine {
 	public static void main(String[] args) {
 
-		// Ouverture du scanner du menu
+		// Ouverture du scanner de menu
 		Scanner scanner = new Scanner(System.in);
 		int choix = 0;
 
@@ -47,10 +49,10 @@ public class MenuAffichageCine {
 
 			switch (choix) {
 
-			// Recherche sur les 10 produits les mieux notés d'une catégorie
+			// Recherche sur lla filmographie d’un acteur donné
 			case 1:
 
-				// Prise de la categorie saisie
+				// Prise de l'acteur saisie
 				Scanner scannerActeur = new Scanner(System.in);
 				System.out.println("1. La filmographie d’un acteur donné :");
 				System.out.print("Nom de l'acteur : ");
@@ -67,14 +69,16 @@ public class MenuAffichageCine {
 				}
 
 				break;
+
+			// Recherche du casting d’un film donné
 			case 2:
 
-				// Prise de la marque saisie
+				// Prise du film saisie
 				Scanner scannerFilm = new Scanner(System.in);
 				System.out.println("1. Casting d’un film donné :");
 				System.out.print("Nom du film : ");
 				String nomFilm = scannerFilm.nextLine();
-				Film film = filmDAO.getByName(nomFilm);
+				Film film = filmDAO.getFilmByNom(nomFilm);
 
 				// Appel de la requete permettant la recherche contenu dans le DAO
 				List<Acteur> listActeurByFilm = acteurDAO.getActeurByFilm(film);
@@ -86,9 +90,10 @@ public class MenuAffichageCine {
 				}
 
 				break;
+			// Recherche les films sortis entre 2 années données
 			case 3:
 
-				// Prise de la categorie saisie
+				// Prise des années de debut et de fin saisies
 				Scanner scannerAnneDebut = new Scanner(System.in);
 				System.out.println("1. Affichez les films sortis entre 2 années données :");
 				System.out.print("Année de début : ");
@@ -97,6 +102,7 @@ public class MenuAffichageCine {
 				System.out.print("Année de fin : ");
 				String anneFin = scannerAnneFin.nextLine();
 
+				// Appel de la requete permettant la recherche contenu dans le DAO
 				List<Film> filmByAnnee = filmDAO.getFilmByAnnee(anneDebut, anneFin);
 
 				// Affichage de la réponse
@@ -104,8 +110,9 @@ public class MenuAffichageCine {
 					System.out.println(films.getNom());
 				}
 				break;
+			// Recherche de la filmographie de deux acteurs donné en commun
 			case 4:
-				// Prise de la categorie saisie
+				// Prise des acteurs saisies
 				Scanner scannerActeur1 = new Scanner(System.in);
 				System.out.println("1. La filmographie de deux acteurs donné en commun :");
 				System.out.print("Nom de l'acteur 1 : ");
@@ -126,18 +133,19 @@ public class MenuAffichageCine {
 					System.out.println(films.getNom());
 				}
 				break;
+			// Recherche les acteurs communs à 2 films donnés
 			case 5:
 
-				// Prise de la categorie saisie
+				// Prise des films saisies
 				Scanner scannerFilm1 = new Scanner(System.in);
-				System.out.println("1. les acteurs communs à 2 films donnés :");
+				System.out.println("1. Les acteurs communs à 2 films donnés :");
 				System.out.print("Nom du film 1 : ");
 				String nomFilm1 = scannerFilm1.nextLine();
 				Scanner scannerFilm2 = new Scanner(System.in);
 				System.out.print("Nom du film 2 : ");
 				String nomFilm2 = scannerFilm2.nextLine();
-				Film film1 = filmDAO.getByName(nomFilm1);
-				Film film2 = filmDAO.getByName(nomFilm2);
+				Film film1 = filmDAO.getFilmByNom(nomFilm1);
+				Film film2 = filmDAO.getFilmByNom(nomFilm2);
 
 				// Appel de la requete permettant la recherche contenu dans le DAO
 				List<Acteur> listActeurCommunByFilm = acteurDAO.getActeurCommunByFilm(film1, film2);
@@ -149,9 +157,11 @@ public class MenuAffichageCine {
 					System.out.println(acteurs.getIdentite());
 				}
 				break;
+			// Recherche des films sortis entre 2 années données et qui ont un
+			// acteur/actrice donné au casting
 			case 6:
 
-				// Prise de la marque saisie
+				// Prise des années de début, de fin et de l'acteur saisies
 				Scanner scannerFilmByAnnee1 = new Scanner(System.in);
 				System.out.println(
 						"1. les films sortis entre 2 années données et qui ont un acteur/actrice donné au casting :");
@@ -165,6 +175,7 @@ public class MenuAffichageCine {
 				String annefilmByActeur = scannerFilmByActeur.nextLine();
 				Acteur acteurByFilm = acteurDAO.getByIdentite(annefilmByActeur);
 
+				// Appel de la requete permettant la recherche contenu dans le DAO
 				List<Film> listFilmByAnneeActeur = filmDAO.getFilmByAnneeActeur(anneDebutFilm1, anneFinFilm2,
 						acteurByFilm);
 

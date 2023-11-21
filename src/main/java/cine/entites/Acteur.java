@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
+ * Initialisation de l'entite Acteur
+ * 
  * @author Louis-Valentin CHARVET
  *
  */
@@ -24,41 +26,67 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "ACTEUR")
 public class Acteur {
+
+	/** id */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int id;
+	private int id;
 
+	/** idImdb */
 	@Column(name = "ID_IMDB")
-	String idImdb;
+	private String idImdb;
 
+	/** identite */
 	@Column(name = "IDENTITE")
-	String identite;
+	private String identite;
 
+	/** dateNaissance */
 	@Column(name = "DATE_NAISSANCE")
-	LocalDate dateNaissance;
+	private LocalDate dateNaissance;
 
+	/** url */
 	@Column(name = "URL")
-	String url;
+	private String url;
 
+	/** films */
 	@ManyToMany
 	@JoinTable(name = "CASTING_PRINCIPAL", joinColumns = @JoinColumn(name = "ID_ACTEUR"), inverseJoinColumns = @JoinColumn(name = "ID_FILM"))
-	List<Film> films = new ArrayList<>();
+	private List<Film> films = new ArrayList<>();
 
+	/** roles */
 	@OneToMany(mappedBy = "acteur")
-	List<Role> roles;
+	private List<Role> roles;
 
+	/** lieuNaissance */
 	@ManyToOne
 	@JoinColumn(name = "ID_LIEU_NAISSANCE")
-	LieuNaissance lieuNaissance;
+	private LieuNaissance lieuNaissance;
 
+	/**
+	 * Constructeur jpa
+	 * 
+	 */
 	public Acteur() {
 	}
 
+	/**
+	 * Constructeur
+	 * 
+	 * @param identite
+	 */
 	public Acteur(String identite) {
 		super();
 		this.identite = identite;
 	}
 
+	/**
+	 * Constructeur
+	 * 
+	 * @param idImdb
+	 * @param identite
+	 * @param dateNaissance
+	 * @param url
+	 */
 	public Acteur(String idImdb, String identite, LocalDate dateNaissance, String url) {
 		this.idImdb = idImdb;
 		this.identite = identite;
@@ -66,11 +94,22 @@ public class Acteur {
 		this.url = url;
 	}
 
+	/**
+	 * Constructeur
+	 * 
+	 * @param idImdb
+	 * @param identite
+	 */
 	public Acteur(String idImdb, String identite) {
 		this.idImdb = idImdb;
 		this.identite = identite;
 	}
 
+	/**
+	 * @param listActeur
+	 * @param nomActeur
+	 * @return
+	 */
 	public static Acteur getActeurByIdbm(List<Acteur> listActeur, String nomActeur) {
 		for (Acteur acteurs : listActeur) {
 			if (acteurs.getIdImdb().equals(nomActeur)) {
@@ -80,6 +119,9 @@ public class Acteur {
 		return null;
 	}
 
+	/**
+	 * Methode to string pour afficher sans erreur stackoverflow
+	 */
 	@Override
 	public String toString() {
 		return "Acteur [id=" + id + ", idImdb=" + idImdb + ", identite=" + identite + ", dateNaissance=" + dateNaissance

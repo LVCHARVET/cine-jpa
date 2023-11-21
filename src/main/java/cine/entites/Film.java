@@ -15,61 +15,96 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+/**
+ * Initialisation de l'entite Film
+ * 
+ * @author Louis-Valentin CHARVET
+ *
+ */
 @Entity
 @Table(name = "FILM")
 public class Film {
 
+	/** id */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int id;
+	private int id;
 
+	/** idImbd */
 	@Column(name = "ID_IMDB")
-	String idImbd;
+	private String idImbd;
 
+	/** nom */
 	@Column(name = "NOM")
-	String nom;
+	private String nom;
 
+	/** annee */
 	@Column(name = "ANNEE")
-	String annee;
+	private String annee;
 
+	/** rating */
 	@Column(name = "RATING")
-	String rating;
+	private String rating;
 
+	/** url */
 	@Column(name = "URLD")
-	String url;
+	private String url;
 
+	/** lieuTournage */
 	@Column(name = "LIEU_TOURNAGE")
-	String lieuTournage;
+	private String lieuTournage;
 
+	/** genres */
 	@ManyToMany
 	@JoinTable(name = "FILMS_GENRES", joinColumns = @JoinColumn(name = "ID_FILM"), inverseJoinColumns = @JoinColumn(name = "ID_GENRE"))
-	List<Genre> genres;
+	private List<Genre> genres;
 
+	/** langue */
 	@ManyToOne
 	@JoinColumn(name = "LANGUE")
-	Langue langue;
+	private Langue langue;
 
+	/** resume */
 	@Column(name = "RESUME", length = 5000)
-	String resume;
+	private String resume;
 
+	/** pays */
 	@ManyToOne
 	@JoinColumn(name = "ID_PAYS")
-	Pays pays;
+	private Pays pays;
 
+	/** acteurs */
 	@ManyToMany
 	@JoinTable(name = "CASTING_PRINCIPAL", joinColumns = @JoinColumn(name = "ID_FILM"), inverseJoinColumns = @JoinColumn(name = "ID_ACTEUR"))
-	List<Acteur> acteurs = new ArrayList<>();
+	private List<Acteur> acteurs = new ArrayList<>();
 
+	/** roles */
 	@OneToMany(mappedBy = "film")
-	List<Role> roles = new ArrayList<>();
+	private List<Role> roles = new ArrayList<>();
 
+	/** realisateurs */
 	@ManyToMany
 	@JoinTable(name = "FILMS_REALISATEURS", joinColumns = @JoinColumn(name = "ID_FILM"), inverseJoinColumns = @JoinColumn(name = "ID_REALISATEUR"))
-	List<Realisateur> realisateurs = new ArrayList<>();
+	private List<Realisateur> realisateurs = new ArrayList<>();
 
+	/**
+	 * Constructeur jpa
+	 * 
+	 */
 	public Film() {
 	}
 
+	/**
+	 * Constructeur
+	 * 
+	 * @param idImbd
+	 * @param nom
+	 * @param annee
+	 * @param rating
+	 * @param url
+	 * @param lieuTournage
+	 * @param resume
+	 */
 	public Film(String idImbd, String nom, String annee, String rating, String url, String lieuTournage,
 			String resume) {
 		this.idImbd = idImbd;
@@ -81,12 +116,23 @@ public class Film {
 		this.resume = resume;
 	}
 
+	/**
+	 * Methode to string pour afficher sans erreur stackoverflow
+	 */
 	@Override
 	public String toString() {
 		return "Film [id=" + id + ", idImbd=" + idImbd + ", nom=" + nom + ", annee=" + annee + ", rating=" + rating
 				+ ", url=" + url + ", lieuTournage=" + lieuTournage + "]";
 	}
 
+	/**
+	 * Methode de recherche d'un film dans une liste de film en fonction de son ID
+	 * IDBM
+	 * 
+	 * @param listFilm
+	 * @param nomFilm
+	 * @return
+	 */
 	public static Film getFilmByIdbm(List<Film> listFilm, String nomFilm) {
 		for (Film films : listFilm) {
 			if (films.getIdImbd().equals(nomFilm)) {

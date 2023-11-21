@@ -10,36 +10,66 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+/**
+ * Initialisation de l'entite Pays
+ * 
+ * @author Louis-Valentin CHARVET
+ *
+ */
 @Entity
 @Table(name = "PAYS")
 public class Pays {
 
+	/** id */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int id;
+	private int id;
 
+	/** nom */
 	@Column(name = "NOM")
-	String nom;
+	private String nom;
 
+	/** url */
 	@Column(name = "URL")
-	String url;
+	private String url;
 
+	/** films */
 	@OneToMany(mappedBy = "pays")
-	List<Film> films;
+	private List<Film> films;
 
+	/**
+	 * Constructeur jpa
+	 * 
+	 */
+	public Pays() {
+	}
+
+	/**
+	 * Constructeur
+	 * 
+	 * @param nom
+	 * @param url
+	 */
 	public Pays(String nom, String url) {
 		this.nom = nom;
 		this.url = url;
 	}
 
-	public Pays() {
-	}
-
+	/**
+	 * Methode to string pour afficher sans erreur stackoverflow
+	 */
 	@Override
 	public String toString() {
 		return "Pays [id=" + id + ", nom=" + nom + ", url=" + url + "]";
 	}
 
+	/**
+	 * Methode de recherche d'un pays dans une liste de pays en fonction de son nom
+	 * 
+	 * @param listPays
+	 * @param nomPays
+	 * @return
+	 */
 	public static Pays getPaysByNom(List<Pays> listPays, String nomPays) {
 		for (Pays pays : listPays) {
 			if (pays.getNom().equals(nomPays)) {

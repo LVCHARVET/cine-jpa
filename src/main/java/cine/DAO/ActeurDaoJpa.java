@@ -32,7 +32,8 @@ public class ActeurDaoJpa implements ActeurDAO {
 
 	@Override
 	public Acteur getByIdentite(String identite) {
-		// Requete Typé pour trouver la Categorie
+
+		// Requete Typé pour trouver l'acteur
 		TypedQuery<Acteur> query = em.createQuery("SELECT a FROM Acteur a WHERE a.identite = :identite", Acteur.class);
 
 		query.setParameter("identite", identite);
@@ -50,17 +51,24 @@ public class ActeurDaoJpa implements ActeurDAO {
 
 	@Override
 	public List<Acteur> getActeurByFilm(Film film) {
+
+		// Requete Typé pour trouver la liste d'acteur
 		TypedQuery<Acteur> query = em.createQuery("SELECT a FROM Acteur a JOIN a.films f WHERE f = :film",
 				Acteur.class);
 
 		query.setParameter("film", film);
 
+		// Stockage du résultat
 		List<Acteur> listActeurByFilm = query.getResultList();
+
+		// Retour du résultat
 		return listActeurByFilm;
 	}
 
 	@Override
 	public List<Acteur> getActeurCommunByFilm(Film film1, Film film2) {
+
+		// Requete Typé pour trouver la liste d'acteur
 		TypedQuery<Acteur> query = em.createQuery(
 				"SELECT a FROM Acteur a JOIN a.roles r1 JOIN a.roles r2 WHERE r1.film = :film1 AND r2.film = :film2",
 				Acteur.class);
@@ -68,8 +76,10 @@ public class ActeurDaoJpa implements ActeurDAO {
 		query.setParameter("film1", film1);
 		query.setParameter("film2", film2);
 
+		// Stockage du résultat
 		List<Acteur> listActeurCommunByFilm = query.getResultList();
 
+		// Retour du résultat
 		return listActeurCommunByFilm;
 	}
 
